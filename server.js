@@ -254,24 +254,43 @@ addRole = () => {
 }
 
 addEmployee = () => {
-    console.log('Add a department   \n')
+    console.log('Add an employee   \n')
     inquirer.prompt([
         {
             type: 'input',
-            name: 'addDept',
-            message: 'What department would you like to add?'
+            name: 'first',
+            message: 'What is the first name of the employee you would like to add?'
         }
+        ,
+        {
+            type: 'input',
+            name: 'last',
+            message: 'What is the last name of the employee you would like to add?'
+        }
+        ,
+        {
+            type: 'input',
+            name: 'role_id',
+            message: 'What is their role ID?'
+        }
+        ,
+        {
+            type: 'input',
+            name: 'manager_id',
+            message: "What is theeir manager's ID?"
+        }
+        ,
     ])
     .then( answer  => {
     const sql = `
-    INSERT INTO department (department_name) 
-    VALUES ('${answer.addDept}');
+    INSERT INTO employee (first_name, last_name, role_id, manager_id) 
+    VALUES ('${answer.first}', '${answer.last}', ${answer.role_id}, ${answer.manager_id});
     `
     connection.promise().query(sql)
 })
     .then(results => {
         console.table(results)
-        showDepartments()
+        showEmployees()
     })
     .catch(err => {
         if (err) throw err
