@@ -124,7 +124,7 @@ const showDepartments = () => {
 
     connection.promise().query(sql)
     .then(results => {
-        console.table(results)
+        console.table(results[0])
         startManager()
     })
     .catch(err => {
@@ -133,49 +133,181 @@ const showDepartments = () => {
 }
 
 showRoles = () => {
+    console.log('Showing all departments   \n')
+    const sql = 'SELECT role_table.id AS ID, role_table.title AS Title, role_table.salary as Salary, department_table.department_name AS Department FROM role_table JOIN department_table ON role_table.department_id = department_table.id'
+
+    connection.promise().query(sql)
+    .then(results => {
+        console.table(results[0])
+        startManager()
+    })
+    .catch(err => {
+        if (err) throw err
+    })
 
 }
 
 showEmployees = () => {
+    console.log('Showing all departments   \n')
+    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+
+    connection.promise().query(sql)
+    .then(results => {
+        console.table(results)
+        startManager()
+    })
+    .catch(err => {
+        if (err) throw err
+    })
 
 }
 
 addDepartments = () => {
+    console.log('Showing all departments   \n')
+    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+
+    connection.promise().query(sql)
+    .then(results => {
+        console.table(results)
+        startManager()
+    })
+    .catch(err => {
+        if (err) throw err
+    })
 
 }
 
 addRole = () => {
+    console.log('Showing all departments   \n')
+    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+
+    connection.promise().query(sql)
+    .then(results => {
+        console.table(results)
+        startManager()
+    })
+    .catch(err => {
+        if (err) throw err
+    })
 
 }
 
 addEmployee = () => {
+    console.log('Showing all departments   \n')
+    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+
+    connection.promise().query(sql)
+    .then(results => {
+        console.table(results)
+        startManager()
+    })
+    .catch(err => {
+        if (err) throw err
+    })
 
 }
 
 updateEmployeeRole = () => {
+    console.log('Showing all departments   \n')
+    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+
+    connection.promise().query(sql)
+    .then(results => {
+        console.table(results)
+        startManager()
+    })
+    .catch(err => {
+        if (err) throw err
+    })
 
 }
 
 showEmployeesByManager = () => {
+    console.log('Showing all departments   \n')
+    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+
+    connection.promise().query(sql)
+    .then(results => {
+        console.table(results)
+        startManager()
+    })
+    .catch(err => {
+        if (err) throw err
+    })
 
 }
 
 showEmployeesByDepartment = () => {
+    console.log('Showing all departments   \n')
+    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+
+    connection.promise().query(sql)
+    .then(results => {
+        console.table(results)
+        startManager()
+    })
+    .catch(err => {
+        if (err) throw err
+    })
 
 }
 
 deleteDepartment = () => {
+    console.log('Showing all departments   \n')
+    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+
+    connection.promise().query(sql)
+    .then(results => {
+        console.table(results)
+        startManager()
+    })
+    .catch(err => {
+        if (err) throw err
+    })
 
 }
 
 deleteRole = () => {
+    console.log('Showing all departments   \n')
+    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+
+    connection.promise().query(sql)
+    .then(results => {
+        console.table(results)
+        startManager()
+    })
+    .catch(err => {
+        if (err) throw err
+    })
 
 }
 
 deleteEmployee = () => {
+    console.log('Showing all departments   \n')
+    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+
+    connection.promise().query(sql)
+    .then(results => {
+        console.table(results)
+        startManager()
+    })
+    .catch(err => {
+        if (err) throw err
+    })
 
 }
 
 showBudget = () => {
+    console.log('Showing all departments   \n')
+    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+
+    connection.promise().query(sql)
+    .then(results => {
+        console.table(results)
+        startManager()
+    })
+    .catch(err => {
+        if (err) throw err
+    })
 
 }
