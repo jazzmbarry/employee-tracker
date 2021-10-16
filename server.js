@@ -118,14 +118,14 @@ const startManager = () => {
     })
 }
 
-showDepartments = () => {
+const showDepartments = () => {
     console.log('Showing all departments   \n')
     const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
 
-    connection.promise.query(sql, (err, rows) => {
-        if (err) throw err
-        console.table(rows)
-        connected()
+    connection.promise().query(sql)
+    .then(results => {
+        console.table(results)
+        startManager()
     })
     .catch(err => {
         if (err) throw err
