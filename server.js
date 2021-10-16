@@ -120,7 +120,7 @@ const startManager = () => {
 
 const showDepartments = () => {
     console.log('Showing all departments   \n')
-    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+    const sql = 'SELECT id AS ID, department_name AS Name FROM department;'
 
     connection.promise().query(sql)
     .then(results => {
@@ -134,7 +134,15 @@ const showDepartments = () => {
 
 showRoles = () => {
     console.log('Showing all departments   \n')
-    const sql = 'SELECT role_table.id AS ID, role_table.title AS Title, role_table.salary as Salary, department_table.department_name AS Department FROM role_table JOIN department_table ON role_table.department_id = department_table.id'
+    const sql = `
+    SELECT 
+    role.id AS ID, 
+    role.title AS Title, 
+    role.salary as Salary, 
+    department.department_name AS Department 
+    FROM role 
+    JOIN department ON role.department_id = department.id
+    ;`
 
     connection.promise().query(sql)
     .then(results => {
@@ -149,11 +157,24 @@ showRoles = () => {
 
 showEmployees = () => {
     console.log('Showing all departments   \n')
-    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+    const sql = `
+    SELECT 
+        employee.id AS ID, 
+        employee.first_name AS First_Name, 
+        employee.last_name AS Last_Name,  
+        role.title AS Title,
+        CONCAT (manager.first_name, ' ', manager.last_name) AS Manager
+    FROM 
+        employee 
+    INNER JOIN 
+        role ON role.id = employee.role_id
+    LEFT JOIN
+        employee manager ON employee.manager_id = manager.id
+    ;`
 
     connection.promise().query(sql)
     .then(results => {
-        console.table(results)
+        console.table(results[0])
         startManager()
     })
     .catch(err => {
@@ -164,7 +185,7 @@ showEmployees = () => {
 
 addDepartments = () => {
     console.log('Showing all departments   \n')
-    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+    const sql = 'SELECT id AS ID, department_name AS Name FROM department'
 
     connection.promise().query(sql)
     .then(results => {
@@ -179,7 +200,7 @@ addDepartments = () => {
 
 addRole = () => {
     console.log('Showing all departments   \n')
-    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+    const sql = 'SELECT id AS ID, department_name AS Name FROM department'
 
     connection.promise().query(sql)
     .then(results => {
@@ -194,7 +215,7 @@ addRole = () => {
 
 addEmployee = () => {
     console.log('Showing all departments   \n')
-    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+    const sql = 'SELECT id AS ID, department_name AS Name FROM department'
 
     connection.promise().query(sql)
     .then(results => {
@@ -209,7 +230,7 @@ addEmployee = () => {
 
 updateEmployeeRole = () => {
     console.log('Showing all departments   \n')
-    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+    const sql = 'SELECT id AS ID, department_name AS Name FROM department'
 
     connection.promise().query(sql)
     .then(results => {
@@ -224,7 +245,7 @@ updateEmployeeRole = () => {
 
 showEmployeesByManager = () => {
     console.log('Showing all departments   \n')
-    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+    const sql = 'SELECT id AS ID, department_name AS Name FROM department'
 
     connection.promise().query(sql)
     .then(results => {
@@ -239,7 +260,7 @@ showEmployeesByManager = () => {
 
 showEmployeesByDepartment = () => {
     console.log('Showing all departments   \n')
-    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+    const sql = 'SELECT id AS ID, department_name AS Name FROM department'
 
     connection.promise().query(sql)
     .then(results => {
@@ -254,7 +275,7 @@ showEmployeesByDepartment = () => {
 
 deleteDepartment = () => {
     console.log('Showing all departments   \n')
-    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+    const sql = 'SELECT id AS ID, department_name AS Name FROM department'
 
     connection.promise().query(sql)
     .then(results => {
@@ -269,7 +290,7 @@ deleteDepartment = () => {
 
 deleteRole = () => {
     console.log('Showing all departments   \n')
-    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+    const sql = 'SELECT id AS ID, department_name AS Name FROM department'
 
     connection.promise().query(sql)
     .then(results => {
@@ -284,7 +305,7 @@ deleteRole = () => {
 
 deleteEmployee = () => {
     console.log('Showing all departments   \n')
-    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+    const sql = 'SELECT id AS ID, department_name AS Name FROM department'
 
     connection.promise().query(sql)
     .then(results => {
@@ -299,7 +320,7 @@ deleteEmployee = () => {
 
 showBudget = () => {
     console.log('Showing all departments   \n')
-    const sql = 'SELECT id AS ID, department_name AS Name FROM department_table'
+    const sql = 'SELECT id AS ID, department_name AS Name FROM department'
 
     connection.promise().query(sql)
     .then(results => {
