@@ -133,7 +133,7 @@ const showDepartments = () => {
 }
 
 showRoles = () => {
-    console.log('Showing all departments   \n')
+    console.log('Showing all roles   \n')
     const sql = `
     SELECT 
     role.id AS ID, 
@@ -156,7 +156,7 @@ showRoles = () => {
 }
 
 showEmployees = () => {
-    console.log('Showing all departments   \n')
+    console.log('Showing all employees   \n')
     const sql = `
     SELECT 
         employee.id AS ID, 
@@ -184,13 +184,24 @@ showEmployees = () => {
 }
 
 addDepartments = () => {
-    console.log('Showing all departments   \n')
-    const sql = 'SELECT id AS ID, department_name AS Name FROM department'
-
+    console.log('Add a department   \n')
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'addDept',
+            message: 'What department would you like to add?'
+        }
+    ])
+    .then( answer  => {
+    const sql = `
+    INSERT INTO department (department_name) 
+    VALUES ('${answer.addDept}');
+    `
     connection.promise().query(sql)
+})
     .then(results => {
         console.table(results)
-        startManager()
+        showDepartments()
     })
     .catch(err => {
         if (err) throw err
@@ -199,13 +210,42 @@ addDepartments = () => {
 }
 
 addRole = () => {
-    console.log('Showing all departments   \n')
-    const sql = 'SELECT id AS ID, department_name AS Name FROM department'
-
+    console.log('Add a role   \n')
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'addRole',
+            message: 'What role would you like to add?'
+        }
+        ,
+        {
+            type: 'input',
+            name: 'salary',
+            message: "What is this role's salary?"
+        }
+        ,
+        {
+            type: "list",
+            name: "dept",
+            message: "What dept is this role in?",
+            choices: [
+                "1",
+                "2",
+                "3",
+                "4"
+            ]
+        }
+    ])
+    .then( answer  => {
+    const sql = `
+    INSERT INTO role (title, salary, department_id) 
+    VALUES ('${answer.addRole}', ${answer.salary}, ${answer.dept});
+    `
     connection.promise().query(sql)
+})
     .then(results => {
         console.table(results)
-        startManager()
+        showRoles()
     })
     .catch(err => {
         if (err) throw err
@@ -214,13 +254,24 @@ addRole = () => {
 }
 
 addEmployee = () => {
-    console.log('Showing all departments   \n')
-    const sql = 'SELECT id AS ID, department_name AS Name FROM department'
-
+    console.log('Add a department   \n')
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'addDept',
+            message: 'What department would you like to add?'
+        }
+    ])
+    .then( answer  => {
+    const sql = `
+    INSERT INTO department (department_name) 
+    VALUES ('${answer.addDept}');
+    `
     connection.promise().query(sql)
+})
     .then(results => {
         console.table(results)
-        startManager()
+        showDepartments()
     })
     .catch(err => {
         if (err) throw err
