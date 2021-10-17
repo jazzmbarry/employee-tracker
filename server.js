@@ -332,7 +332,7 @@ updateEmployeeRole = () => {
             `
 
             connection.promise().query(inq)
-            startManager()            
+            showEmployees()            
         })
     })
     .catch(err => {
@@ -387,8 +387,29 @@ showEmployeesByDepartment = () => {
 
     connection.promise().query(sql)
     .then(results => {
-        console.table(results)
-        startManager()
+        console.table(results[0])
+        inquirer.prompt([
+            {
+                type: 'input',
+                name: 'inNum',
+                message: 'By ID, which department would you like to look at?'
+            }
+        ])
+        .then(answer =>{
+            const inq = `
+            SELECT employee.id, employee.first_name, employee.last_name, role.title, department.department_name
+            FROM employee
+            INNER JOIN role ON role.id = employee.role_id
+            LEFT JOIN department ON department.id = role.department_id
+            WHERE department_id = ${answer.inNum}     
+            `
+
+            connection.promise().query(inq)
+            .then(result2 => {
+                console.table(result2[0])
+                startManager()
+            })
+        })
     })
     .catch(err => {
         if (err) throw err
