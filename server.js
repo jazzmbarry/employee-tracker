@@ -46,7 +46,6 @@ const startManager = () => {
             'Add a role',
             'Add an employee',
             'Update an employee role',
-            'Update employee managers',
             'View employees by manager',
             'View employees by department',
             'Delete a department',
@@ -277,7 +276,7 @@ addEmployee = () => {
         {
             type: 'input',
             name: 'manager_id',
-            message: "What is theeir manager's ID?"
+            message: "What is their manager's ID?"
         }
         ,
     ])
@@ -298,14 +297,43 @@ addEmployee = () => {
 
 }
 
+// You update your manager through the updateEmployeeRole
 updateEmployeeRole = () => {
     console.log('Showing all departments   \n')
-    const sql = 'SELECT id AS ID, department_name AS Name FROM department'
+    const sql = 'SELECT id AS ID, first_name, last_name FROM employee'
 
     connection.promise().query(sql)
     .then(results => {
-        console.table(results)
-        startManager()
+        console.table(results[0])
+        inquirer.prompt([
+            {
+                type: 'input',
+                name: 'id',
+                message: 'What is the ID number of this employee?'
+            }
+            ,
+            {
+                type: 'input',
+                name: 'role',
+                message: 'What is their new role ID?'
+            }
+            ,
+            {
+                type: 'input',
+                name: 'manager',
+                message: "What is their new (or exisiting if the same) manager's ID?"
+            }
+        ])
+        .then(answer =>{
+            const inq = `
+            UPDATE employee
+            SET role_id = ${answer.role}, manager_id = ${answer.manager}
+            WHERE id = ${answer.id}
+            `
+
+            connection.promise().query(inq)
+            startManager()            
+        })
     })
     .catch(err => {
         if (err) throw err
@@ -315,12 +343,37 @@ updateEmployeeRole = () => {
 
 showEmployeesByManager = () => {
     console.log('Showing all departments   \n')
-    const sql = 'SELECT id AS ID, department_name AS Name FROM department'
-
+    const sql =` 
+    SELECT employee.id, employee.first_name, employee.last_name, role.title, department.department_name
+    FROM employee
+    INNER JOIN role ON role.id = employee.role_id
+    LEFT JOIN department ON department.id = role.department_id
+    WHERE department.department_name = 'Management'
+`
     connection.promise().query(sql)
     .then(results => {
-        console.table(results)
-        startManager()
+        console.table(results[0])
+        inquirer.prompt([
+            {
+                type: 'input',
+                name: 'idNum',
+                message: "Select by ID which manager's employees you want to see."
+            }
+        ])
+        .then(answer => {
+            const inq = `
+            SELECT employee.id, employee.first_name, employee.last_name, role.title, department.department_name
+            FROM employee
+            INNER JOIN role ON role.id = employee.role_id
+            LEFT JOIN department ON department.id = role.department_id
+            WHERE manager_id = ${answer.idNum}
+                `
+            connection.promise().query(inq)
+            .then(result2 =>{
+                console.table(result2[0])
+            })
+        })
+
     })
     .catch(err => {
         if (err) throw err
