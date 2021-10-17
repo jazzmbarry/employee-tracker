@@ -51,8 +51,8 @@ const startManager = () => {
             'Delete a department',
             'Delete a role',
             'Delete an employee',
-            'View Budget',
-            'No Action'
+            'View Budget by Department',
+            'Quit'
         ]
     }
 ])
@@ -107,17 +107,17 @@ const startManager = () => {
             deleteEmployee()
         }
 
-        if (menu === 'View Budget') {
+        if (menu === 'View Budget by Department') {
             showBudget()
         }
 
-        if (menu === 'No Action') {
+        if (menu === 'Quit') {
             connection.end()
         }    
     })
 }
 
-const showDepartments = () => {
+showDepartments = () => {
     console.log('Showing all departments   \n')
     const sql = 'SELECT id AS ID, department_name AS Name FROM department;'
 
@@ -515,7 +515,7 @@ deleteEmployee = () => {
         .then(answer =>{
             const inq = `
             DELETE FROM employee
-            WHERE role.id = ${answer.delEmpl}
+            WHERE employee.id = ${answer.delEmpl}
             `
 
             connection.promise().query(inq)
@@ -534,8 +534,29 @@ showBudget = () => {
 
     connection.promise().query(sql)
     .then(results => {
-        console.table(results)
-        startManager()
+        console.table(results[0])
+        inquirer.prompt([
+            {
+                type: 'input',
+                name: 'inNum',
+                message: "By ID, which department's salary would you like to look at?"
+            }
+        ])
+        .then(answer =>{
+            const inq = `
+            SELECT employee.id, employee.first_name, employee.last_name, role.salary, role.title, department.department_name
+            FROM employee
+            INNER JOIN role ON role.id = employee.role_id
+            LEFT JOIN department ON department.id = role.department_id
+            WHERE department_id = ${answer.inNum}     
+            `
+
+            connection.promise().query(inq)
+            .then(result2 => {
+                console.table(result2[0])
+                startManager()
+            })
+        })
     })
     .catch(err => {
         if (err) throw err
