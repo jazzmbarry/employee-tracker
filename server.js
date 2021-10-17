@@ -423,8 +423,23 @@ deleteDepartment = () => {
 
     connection.promise().query(sql)
     .then(results => {
-        console.table(results)
-        startManager()
+        console.table(results[0])
+        inquirer.prompt([
+            {
+                type: 'input',
+                name: 'delDept',
+                message: "By ID, Which department would you like to delete?"
+            }
+        ])
+        .then(answer =>{
+            const inq = `
+            DELETE FROM department
+            WHERE department.id = ${answer.delDept}
+            `
+
+            connection.promise().query(inq)
+            showDepartments()
+        })
     })
     .catch(err => {
         if (err) throw err
@@ -433,13 +448,36 @@ deleteDepartment = () => {
 }
 
 deleteRole = () => {
-    console.log('Showing all departments   \n')
-    const sql = 'SELECT id AS ID, department_name AS Name FROM department'
+    console.log('Showing all roles   \n')
+    const sql = `
+    SELECT 
+    role.id AS ID, 
+    role.title AS Title, 
+    role.salary as Salary, 
+    department.department_name AS Department 
+    FROM role 
+    JOIN department ON role.department_id = department.id
+    ;`
 
     connection.promise().query(sql)
     .then(results => {
-        console.table(results)
-        startManager()
+        console.table(results[0])
+        inquirer.prompt([
+            {
+                type: 'input',
+                name: 'delRole',
+                message: "By ID, Which role would you like to delete?"
+            }
+        ])
+        .then(answer =>{
+            const inq = `
+            DELETE FROM role
+            WHERE role.id = ${answer.delRole}
+            `
+
+            connection.promise().query(inq)
+            showRoles()
+        })
     })
     .catch(err => {
         if (err) throw err
@@ -448,13 +486,41 @@ deleteRole = () => {
 }
 
 deleteEmployee = () => {
-    console.log('Showing all departments   \n')
-    const sql = 'SELECT id AS ID, department_name AS Name FROM department'
+    console.log('Showing all roles   \n')
+    const sql = `
+    SELECT 
+        employee.id AS ID, 
+        employee.first_name AS First_Name, 
+        employee.last_name AS Last_Name,  
+        role.title AS Title,
+        CONCAT (manager.first_name, ' ', manager.last_name) AS Manager
+    FROM 
+        employee 
+    INNER JOIN 
+        role ON role.id = employee.role_id
+    LEFT JOIN
+        employee manager ON employee.manager_id = manager.id
+    ;`
 
     connection.promise().query(sql)
     .then(results => {
-        console.table(results)
-        startManager()
+        console.table(results[0])
+        inquirer.prompt([
+            {
+                type: 'input',
+                name: 'delEmpl',
+                message: "By ID, Which employee would you like to delete?"
+            }
+        ])
+        .then(answer =>{
+            const inq = `
+            DELETE FROM employee
+            WHERE role.id = ${answer.delEmpl}
+            `
+
+            connection.promise().query(inq)
+            showEmployees()
+        })
     })
     .catch(err => {
         if (err) throw err
