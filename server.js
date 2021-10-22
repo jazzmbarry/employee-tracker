@@ -371,6 +371,7 @@ showEmployeesByManager = () => {
             connection.promise().query(inq)
             .then(result2 =>{
                 console.table(result2[0])
+                startManager()
             })
         })
 
